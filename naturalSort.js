@@ -18,23 +18,41 @@
         // numeric, hex or date detection
         xD = parseInt(x.match(hre)) || (xN.length != 1 && x.match(dre) && Date.parse(x)),
         yD = parseInt(y.match(hre)) || xD && y.match(dre) && Date.parse(y) || null,
-        oFxNcL, oFyNcL;
+        oFxNcL, oFyNcL,
+        locRes = 0;
+
     // first try and sort Hex codes or Dates
-    if (yD)
+    if (yD) {
         if ( xD < yD ) return -1;
         else if ( xD > yD ) return 1;
+    }
     // natural sorting through split numeric strings and default strings
     for(var cLoc=0, numS=Math.max(xN.length, yN.length); cLoc < numS; cLoc++) {
+
         // find floats not starting with '0', string or 0 if not defined (Clint Priest)
         oFxNcL = !(xN[cLoc] || '').match(ore) && parseFloat(xN[cLoc]) || xN[cLoc] || 0;
         oFyNcL = !(yN[cLoc] || '').match(ore) && parseFloat(yN[cLoc]) || yN[cLoc] || 0;
+
         // handle numeric vs string comparison - number < string - (Kyle Adams)
         if (isNaN(oFxNcL) !== isNaN(oFyNcL)) { return (isNaN(oFxNcL)) ? 1 : -1; }
+
+        // use number comparison if either value is string zero
+        if (parseInt(oFxNcL) === 0) oFxNcL = 0;
+        if (parseInt(oFyNcL) === 0) oFyNcL = 0;
+
         // rely on string comparison if different types - i.e. '02' < 2 != '02' < '2'
         else if (typeof oFxNcL !== typeof oFyNcL) {
             oFxNcL += '';
             oFyNcL += '';
         }
+
+        // use locale sensitive sort for strings when case insensitive
+        // note: localeCompare interleaves uppercase with lowercase (e.g. A,a,B,b)
+        if (naturalSort.insensitive && typeof oFxNcL === 'string' && typeof oFyNcL === 'string') {
+            locRes = oFxNcL.localeCompare(oFyNcL);
+            if (locRes !== 0) return locRes;
+        }
+
         if (oFxNcL < oFyNcL) return -1;
         if (oFxNcL > oFyNcL) return 1;
     }

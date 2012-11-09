@@ -2,6 +2,7 @@
                     'http://www.w3.org/TR/html4/loose.dtd'>
 <html>
 <head>
+	<meta charset="utf-8">
 	<title>js-naturalsort test suite</title>
     <script src='http://code.jquery.com/jquery-latest.js'></script>
     <link rel='stylesheet' href='http://code.jquery.com/qunit/git/qunit.css' type='text/css' media='screen' />
@@ -9,6 +10,7 @@
 	<script src='naturalSort.js' type='text/javascript'></script>
 	<script type='text/javascript'>
         $(function () {
+        	
 			test('different values types', function () {
 				wrapTest(
 					['a',1],
@@ -299,11 +301,11 @@
                 wrapTest(
                     ['A', 'b', 'C', 'd', 'E', 'f'],
                     ['A', 'b', 'C', 'd', 'E', 'f'],
-                    'case sensitive pre-sorted array');
+                    'case insensitive pre-sorted array');
                 wrapTest(
                     ['A', 'C', 'E', 'b', 'd', 'f'],
                     ['A', 'b', 'C', 'd', 'E', 'f'],
-                    'case sensitive un-sorted array');
+                    'case insensitive un-sorted array');
                 naturalSort.insensitive = false;
                 wrapTest(
                     ['A', 'C', 'E', 'b', 'd', 'f'],
@@ -362,8 +364,19 @@
                     ['9', '11', '22', '99', 'A', 'AA', 'Aa', 'AaA', 'Aaaa', 'BB', 'aA', 'aAaa', 'aa', 'aaA', 'aaa', 'aaaa', 'bB', 'bbbb'],
                     'issue #5 - invalid sort order - Howie Schecter');
 			});
+			test('Huddle fork tests', function () {
 
+				// locale specific sort needs case insensitive otherwise extended chars are sorted in ascii table order
+				naturalSort.insensitive = true;
+	            wrapTest(
+	            	['b','1','100','b99','99','a','a100','ã','ã100','ã99','a99','b100'],
+	            	['1','99','100','a','a99','a100','ã','ã99','ã100','b','b99','b100'],
+	            	'Extended chars - Huddle');
+	            naturalSort.insensitive = false;
+
+	        });
 		});
+
 		function wrapTest(origArray, sortArray, message) {
 			deepEqual($.extend([], origArray).sort(naturalSort), sortArray, (message ? message + ' - ' : '') + QUnit.jsDump.parse(origArray));
 		}
