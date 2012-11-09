@@ -26,6 +26,9 @@ A parseInt coercion has been added to tokens whose value is string zero `'0'`. T
 
 ## Example use
 
+    // setting case insensitive
+    naturalSort.insensitive = true;
+
     // Simple numerics
     >>> ['10',9,2,'1','4'].sort(naturalSort)
     ['1',2,'4',9,'10']
