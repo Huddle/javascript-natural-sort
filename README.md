@@ -1,3 +1,31 @@
+Javascript Natural Sort
+=======================
+
+A natural-sort comparator algorithm.
+
+This version is forked from [overset / javascript-natural-sort](https://github.com/overset/javascript-natural-sort)
+
+We endevour to keep this fork compatible with original however if requirements confict then the Huddle ones will get preference. User beware. 
+
+## Changes in this fork
+
+[Huddle / javascript-natural-sort](https://github.com/Huddle/javascript-natural-sort)
+
+### Localisation
+
+Tokenised string fragments are compared using the native JavaScript [`localeCompare`](https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/localeCompare) method. This helps ensure that extended characters are sorted as per users expectations.
+
+The localeCompare sort is disabled when the `naturalSort.insensitive` flag is `false` as it appears to interleave uppercase with lowercase (e.g. A,a,B,b)
+
+Note: Chrome currently does not implement localeCompare as we might expect (it uses char code comparison). We expect this to be fixed soon, see: http://code.google.com/p/v8/issues/detail?id=459
+
+### Negative numbers as strings
+
+A parseInt coercion has been added to tokens whose value is string zero `'0'`. This ensures that -ve number strings are compared by number value rather than dash prefixed string.
+
+
+## Example use
+
     // Simple numerics
     >>> ['10',9,2,'1','4'].sort(naturalSort)
     ['1',2,'4',9,'10']
