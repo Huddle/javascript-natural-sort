@@ -36,9 +36,9 @@
         // handle numeric vs string comparison - number < string - (Kyle Adams)
         if (isNaN(oFxNcL) !== isNaN(oFyNcL)) { return (isNaN(oFxNcL)) ? 1 : -1; }
 
-        // use number comparison if either value is string zero
-        if (parseInt(oFxNcL) === 0) oFxNcL = 0;
-        if (parseInt(oFyNcL) === 0) oFyNcL = 0;
+        // use decimal number comparison if either value is string zero
+        if (parseInt(oFxNcL, 10) === 0) oFxNcL = 0;
+        if (parseInt(oFyNcL, 10) === 0) oFyNcL = 0;
 
         // rely on string comparison if different types - i.e. '02' < 2 != '02' < '2'
         else if (typeof oFxNcL !== typeof oFyNcL) {
