@@ -11,6 +11,11 @@ We endevour to keep this fork compatible with original however if requirements c
 
 [Huddle / javascript-natural-sort](https://github.com/Huddle/javascript-natural-sort)
 
+### version
+
+moved to semvar
+v1.0.7
+
 ### Localisation
 
 Tokenised string fragments are compared using the native JavaScript [`localeCompare`](https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/String/localeCompare) method. This helps ensure that extended characters are sorted as per users expectations.
